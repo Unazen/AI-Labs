@@ -32,4 +32,4 @@ df[numeric_cols] = scaler.fit_transform(df[numeric_cols]) """
 #ОНЕ
 df = pd.get_dummies(df, columns=categorical_cols, drop_first=True)
 
-df.to_csv("prosseced_regerssion.csv", index=False)
+df.to_csv("processed_regression.csv", index=False)
