@@ -1,13 +1,13 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-# from sklearn import tree
+from sklearn import tree
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, root_mean_squared_error, mean_absolute_error,r2_score 
 from sklearn.tree import DecisionTreeRegressor
 
 #загрузка датасета
-df = pd.read_csv("prosseced_regerssion.csv")
+df = pd.read_csv("processed_regression.csv")
 print(df.head())
 
 #разделение на задачу и цели
@@ -48,7 +48,28 @@ plt.title("Реальные vs Предсказанные")
 plt.savefig("regr_pred.png")
 plt.show() """
 
-# tree.plot_tree(dt_model)
-y_pred_test.plot_tree(dt_regressor_model)
+# Построение графика "Реальные vs Предсказанные"
+plt.figure(figsize=(10, 6))
+plt.scatter(y_test, y_pred_test, alpha=0.5)
+plt.plot([y.min(), y.max()], [y.min(), y.max()], 'r--', lw=2) # Диагональ
+plt.xlabel("Реальные значения (final_grade)")
+plt.ylabel("Предсказанные значения")
+plt.title("Качество регрессии: Реал vs Предсказание")
+plt.savefig("regr_model_pred.png")
+plt.show()
+
+# Визуализация дерева
+plt.figure(figsize=(20, 10))
+tree.plot_tree(dt_regressor_model, 
+               feature_names=X.columns.tolist(), 
+               filled=True, 
+               fontsize=10,
+               max_depth=4) # Ограничиваем отрисовку для красоты, даже если дерево глубже
+plt.title("Структура дерева решений")
 plt.savefig("regr_tree.png")
 plt.show()
+
+# tree.plot_tree(dt_model)
+""" tree.plot_tree(dt_regressor_model)
+plt.savefig("regr_tree.png")
+plt.show() """

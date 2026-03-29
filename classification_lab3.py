@@ -5,7 +5,7 @@ from sklearn.metrics import accuracy_score, confusion_matrix, classification_rep
 from sklearn.tree import DecisionTreeClassifier
 
 #загрузка датасета
-df=pd.read_csv("processed_lab1_classification.csv")
+df=pd.read_csv("processed_classification.csv")
 print(df.head())
 
 #разделение на цель и параметры
@@ -17,6 +17,7 @@ X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.4,random_sta
 
 #модель
 dt_classifier_model = DecisionTreeClassifier()
+
 
 y_proba = ml_model.predict_proba(X_test)
 print(ml_model.classes_)
