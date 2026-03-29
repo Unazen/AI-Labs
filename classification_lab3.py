@@ -1,8 +1,10 @@
 import pandas as pd
 from sklearn.metrics import roc_curve
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report, auc, roc_curve
 from sklearn.tree import DecisionTreeClassifier
+import numpy as np
+import matplotlib.pyplot as plt
 
 #загрузка датасета
 df=pd.read_csv("processed_classification.csv")
@@ -17,24 +19,34 @@ X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.4,random_sta
 
 #модель
 dt_classifier_model = DecisionTreeClassifier()
+dt_classifier_model.fit(X_train, y_train)
 
+y_pred_test=dt_classifier_model.predict(X_test)
 
-y_proba = ml_model.predict_proba(X_test)
-print(ml_model.classes_)
+#работа с ROC кривой
+#вероятности (матрица 16 колонок)
+y_proba = dt_classifier_model.predict_proba(X_test)
+print(dt_classifier_model.classes_)
 
-
+""" #ROC кривая
 fpr, tpr, thresholds = roc_curve(y_test, y_proba[:, 1])
-from sklearn.metrics import auc
-auc_metric = auc(fpr, tpr)
+auc_metric = auc(fpr, tpr) """
 
+# 2. Выбираем класс, который хотим проверить (например, под индексом 0)
+class_index = 0 
+class_name = dt_classifier_model.classes_[class_index]
 
+# 3. Создаем временную метку: 1 если это наш класс, 0 если любой другой из 15
+y_test_binary = (y_test == class_name).astype(int)
+
+# 4. Считаем ROC
+fpr, tpr, _ = roc_curve(y_test_binary, y_proba[:, class_index])
+roc_auc = auc(fpr, tpr)
 
 #Оценка классификационной модели 
 accuracy = accuracy_score(y_test, y_pred_test)
-
 #matrix
 cm = confusion_matrix(y_test, y_pred_test)
-
 #report
 report = classification_report(y_test, y_pred_test)
 
@@ -42,3 +54,14 @@ report = classification_report(y_test, y_pred_test)
 print("\nТочность:", accuracy)
 print("\nConfusion matrix",cm )
 print("\nОтчет: ", report)
+
+#Визуализация ROC-кривой
+plt.figure()
+plt.plot(fpr, tpr, color='darkorange', label=f'ROC curve (area = {roc_auc:.2f})')
+plt.plot([0, 1], [0, 1], color='navy', linestyle='--')
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.title('ROC-кривая')
+plt.legend(loc="lower right")
+plt.savefig("ROC-curve.png")
+plt.show()
