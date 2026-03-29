@@ -2,6 +2,7 @@ import pandas as pd
 from sklearn.metrics import roc_curve
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+from sklearn.tree import DecisionTreeClassifier
 
 #загрузка датасета
 df=pd.read_csv("processed_lab1_classification.csv")
@@ -15,11 +16,16 @@ y=df["Personality"]
 X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.4,random_state=42)
 
 #модель
+dt_classifier_model = DecisionTreeClassifier()
+
 y_proba = ml_model.predict_proba(X_test)
 print(ml_model.classes_)
 
 
 fpr, tpr, thresholds = roc_curve(y_test, y_proba[:, 1])
+from sklearn.metrics import auc
+auc_metric = auc(fpr, tpr)
+
 
 
 #Оценка классификационной модели 
