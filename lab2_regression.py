@@ -7,7 +7,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, root_mean_squared_error, mean_absolute_error,r2_score 
 
 #обработка
-df = pd.read_csv("prosseced_regerssion.csv")
+df = pd.read_csv("processed_regression.csv")
 #разделение на задачу и цели
 X = df.drop("final_grade",axis=1)
 y=df["final_grade"]
