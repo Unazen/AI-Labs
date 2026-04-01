@@ -3,7 +3,7 @@ from sklearn.metrics import roc_curve
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report, auc, roc_curve
 from sklearn.tree import DecisionTreeClassifier
-import numpy as np
+# import numpy as np
 import matplotlib.pyplot as plt
 
 #загрузка датасета
@@ -28,7 +28,7 @@ y_pred_test=dt_classifier_model.predict(X_test)
 y_proba = dt_classifier_model.predict_proba(X_test)
 print(dt_classifier_model.classes_)
 
-""" #ROC кривая
+""" #ROC кривая (только для бинарных категорий)
 fpr, tpr, thresholds = roc_curve(y_test, y_proba[:, 1])
 auc_metric = auc(fpr, tpr) """
 
