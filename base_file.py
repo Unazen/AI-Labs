@@ -33,7 +33,7 @@ y_pred_test=regress_model.predict(X_test)  """
 
 logistic_model = LogisticRegression()
 logistic_model.fit(X_train, y_train)
-y_pred_test=logistic_model.predict(X_test) 
+y_pred_test=logistic_model.predict(X_test)
 
 #6 calc err
 
