@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns 
 
 # Загрузка датасета
-df = pd.read_csv("processed_lab1_classification.csv")
+df = pd.read_csv("processed_classification.csv")
 print(df.head())
 
 #разделение на цель и параметры
