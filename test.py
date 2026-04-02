@@ -14,21 +14,25 @@ df = df.drop("Geography",axis=1)
 df = df.drop("Gender",axis=1)
 # df = df.drop("",axis=1)
 numeric = ["CreditScore","Age","Tenure","Balance","NumOfProducts","EstimatedSalary"]
+# categorical = ["Gender",]
 scaler = MinMaxScaler()
 df[numeric] = scaler.fit_transform(df[numeric])
+
+# df[categorical] = pd.get_dummies(df, drop_first=True)
+
 
 #target - exited
 X = df.drop("Exited", axis=1)
 y=df["Exited"]
 
 #train test
-X_train, X_test, y_train, y_test = train_test_split(X,y,train_size=0.4,random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.4,random_state=42)
 
 l1 = Lasso(alpha=2.0)
 l1.fit(X_train, y_train)
 y_pred_test = l1.predict(X_test)
 
-model = LogisticRegression()
+model = LogisticRegression(penalty='l1', solver='liblinear', class_weight='balanced')
 model.fit(X_train, y_train)
 y_pred_test = model.predict(X_test)
 
