@@ -39,8 +39,7 @@ y_pred_test=DTR.predict(X_test) """
 print(accuracy_score(y_test, y_pred_test))
 print(confusion_matrix(y_test, y_pred_test))
 print(classification_report(y_test, y_pred_test))
-# print(roc_curve(y_test, y_pred_test))
-# print(roc_auc_score(y_test, y_pred_test))
+
 
 # print(r2_score(y_test, y_pred_test))
 
