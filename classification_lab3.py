@@ -33,7 +33,7 @@ fpr, tpr, thresholds = roc_curve(y_test, y_proba[:, 1])
 auc_metric = auc(fpr, tpr) """
 
 # 2. Выбираем класс, который хотим проверить (например, под индексом 0)
-class_index = 8
+class_index = 0
 class_name = dt_classifier_model.classes_[class_index]
 
 # 3. Создаем временную метку: 1 если это наш класс, 0 если любой другой из 15

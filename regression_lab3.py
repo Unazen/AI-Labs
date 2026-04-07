@@ -18,7 +18,7 @@ y=df["final_grade"]
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, random_state=42)
 
 #модель
-dt_regressor_model = DecisionTreeRegressor()
+dt_regressor_model = DecisionTreeRegressor(max_depth=8)
 dt_regressor_model.fit(X_train, y_train)
 y_pred_test=dt_regressor_model.predict(X_test)
 
