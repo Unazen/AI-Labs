@@ -1,13 +1,14 @@
 import pandas as pd
 from sklearn.metrics import roc_curve
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, confusion_matrix, classification_report, auc, roc_curve
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report, auc, roc_curve, roc_auc_score
 # from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
 import numpy as np
 import matplotlib.pyplot as plt
 
 #загрузка датасета
-df=pd.read_csv("processed_classification.csv")
+df=pd.read_csv("datasets/processed_classification.csv")
 print(df.head())
 
 #разделение на цель и параметры
@@ -18,7 +19,14 @@ y=df["Personality"]
 X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.4,random_state=42)
 
 #модель
+RF = RandomForestClassifier()
+RF.fit(X_train, y_train)
+y_pred_test_rf = RF.predict(X_test)
 
+#модель 2
+AB = AdaBoostClassifier()
+AB.fit(X_train, y_train)
+y_pred_test_ab = AB.predict(X_test)
 
 #Оценка классификационной модели 
 accuracy = accuracy_score(y_test, y_pred_test)
@@ -26,6 +34,8 @@ accuracy = accuracy_score(y_test, y_pred_test)
 cm = confusion_matrix(y_test, y_pred_test)
 #report
 report = classification_report(y_test, y_pred_test)
+
+print(roc_auc_score())
 
 #результаты
 print("\nТочность:", accuracy)
