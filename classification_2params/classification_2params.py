@@ -50,7 +50,7 @@ y=dc["Potability"]
 X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.4,random_state=42)
 
 #модель
-dt_classifier_model = DecisionTreeClassifier(max_depth=6)
+dt_classifier_model = DecisionTreeClassifier()
 dt_classifier_model.fit(X_train, y_train)
 
 y_pred_test=dt_classifier_model.predict(X_test)
@@ -99,3 +99,35 @@ plt.title('ROC-кривая')
 plt.legend(loc="lower right")
 plt.savefig("classification_2params/ROC-curve.png")
 plt.show()
+
+
+# Список конфигураций для сравнения
+configs = [
+    {"name": "Без ограничений", "params": {}},
+    {"name": "Глубина 3 (Pre-pruning)", "params": {"max_depth": 3}},
+    {"name": "Глубина 6 (Pre-pruning)", "params": {"max_depth": 6}},
+    {"name": "Глубина 6 (Pre-pruning)+Мин. объектов в листе 2", "params": {"max_depth": 6,"min_samples_leaf": 2,"class_weight":'balanced'}},
+    {"name": "Мин. объектов в листе 10", "params": {"min_samples_leaf": 10}},
+    {"name": "Обрезка (Post-pruning)", "params": {"ccp_alpha": 0.02}}
+]
+
+results = []
+
+for config in configs:
+    # Создаем и обучаем модель
+    model = DecisionTreeClassifier(**config["params"], random_state=42)
+    model.fit(X_train, y_train)
+    
+    # Считаем точность
+    train_acc = model.score(X_train, y_train)
+    test_acc = model.score(X_test, y_test)
+    
+    results.append({
+        "Вариант": config["name"],
+        "Train Accuracy": train_acc,
+        "Test Accuracy": test_acc
+    })
+
+# Выводим красивую таблицу
+results_df = pd.DataFrame(results)
+print(results_df)

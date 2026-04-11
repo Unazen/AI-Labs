@@ -55,7 +55,7 @@ report = classification_report(y_test, y_pred_test)
 print("\nТочность:", accuracy)
 print("\nConfusion matrix",cm )
 print("\nОтчет: ", report)
-print(score)
+print("\n Roc Auc Score",score)
 
 #Визуализация ROC-кривой
 plt.figure()
@@ -67,3 +67,37 @@ plt.title('ROC-кривая')
 plt.legend(loc="lower right")
 plt.savefig("ROC-curve.png")
 plt.show()
+
+import pandas as pd
+from sklearn.tree import DecisionTreeClassifier, plot_tree
+import matplotlib.pyplot as plt
+
+# Список конфигураций для сравнения
+configs = [
+    {"name": "Без ограничений", "params": {}},
+    {"name": "Глубина 3 (Pre-pruning)", "params": {"max_depth": 3}},
+    {"name": "Глубина 6 (Pre-pruning)", "params": {"max_depth": 6}},
+    {"name": "Мин. объектов в листе 10", "params": {"min_samples_leaf": 10}},
+    {"name": "Обрезка (Post-pruning)", "params": {"ccp_alpha": 0.02}}
+]
+
+results = []
+
+for config in configs:
+    # Создаем и обучаем модель
+    model = DecisionTreeClassifier(**config["params"], random_state=42)
+    model.fit(X_train, y_train)
+    
+    # Считаем точность
+    train_acc = model.score(X_train, y_train)
+    test_acc = model.score(X_test, y_test)
+    
+    results.append({
+        "Вариант": config["name"],
+        "Train Accuracy": train_acc,
+        "Test Accuracy": test_acc
+    })
+
+# Выводим красивую таблицу
+results_df = pd.DataFrame(results)
+print(results_df)

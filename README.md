@@ -6,4 +6,4 @@
 3. Решить задачу классификации и оценить работу модели с помощью ROC-кривой
 4. Выгрузить результат работы на Github
 
-<p><a href="https://www.kaggle.com/datasets/uom190346a/water-quality-and-potability">Датасет с качество воды</a></p>
+<p><a href="https://www.kaggle.com/datasets/uom190346a/water-quality-and-potability">Датасет с качеством воды</a></p>
