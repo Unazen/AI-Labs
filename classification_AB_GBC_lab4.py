@@ -3,7 +3,7 @@ from sklearn.metrics import roc_curve
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report, auc, roc_curve, roc_auc_score
 # from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
+from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier, GradientBoostingClassifier
 import matplotlib.pyplot as plt
 
 #загрузка датасета
@@ -17,33 +17,32 @@ y=df["Personality"]
 # разделение на train test
 X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.4,random_state=42)
 
-#модель
-RF = RandomForestClassifier(oob_score=True)
-RF.fit(X_train, y_train)
-y_pred_test_rf = RF.predict(X_test)
+#модель AB
+AB = AdaBoostClassifier(learning_rate=1,n_estimators=500)
+""" AB = AdaBoostClassifier(learning_rate=0.5,n_estimators=1000)
+AB = AdaBoostClassifier(learning_rate=0.1,n_estimators=5000) """
+AB.fit(X_train, y_train)
+y_pred_test_ab = AB.predict(X_test)
 
 #Оценка классификационной модели 
-accuracy = accuracy_score(y_test, y_pred_test_rf)
+accuracy = accuracy_score(y_test, y_pred_test_ab)
 #matrix
-cm = confusion_matrix(y_test, y_pred_test_rf)
+cm = confusion_matrix(y_test, y_pred_test_ab)
 #report
-report = classification_report(y_test, y_pred_test_rf)
+report = classification_report(y_test, y_pred_test_ab)
 #результаты
 print("\nТочность:", accuracy)
 print("\nConfusion matrix",cm )
 print("\nОтчет: ", report)
-""" out_of_bag_predictions = RF.oob_prediction_
-print("OOB Accuracy:", RF.oob_score_)
-print("OOBE: ", 1 - RF.oob_score_) """
 
-#работа с ROC кривой (RF)
+#работа с ROC кривой (AB)
 #вероятности (матрица 16 колонок)
-y_proba = RF.predict_proba(X_test)
-print(RF.classes_)
+y_proba = AB.predict_proba(X_test)
+print(AB.classes_)
 
 # 2. Выбираем класс, который хотим проверить (например, под индексом 0)
-class_index = 5
-class_name = RF.classes_[class_index]
+class_index = 0
+class_name = AB.classes_[class_index]
 
 # 3. Создаем временную метку: 1 если это наш класс, 0 если любой другой из 15
 y_test_binary = (y_test == class_name).astype(int)
@@ -61,5 +60,7 @@ plt.xlabel('False Positive Rate')
 plt.ylabel('True Positive Rate')
 plt.title('ROC-кривая')
 plt.legend(loc="lower right")
-plt.savefig("ROC-curve-RF.png")
+plt.savefig("ROC-curve-AB.png")
 plt.show()
+
+#модель GBC
