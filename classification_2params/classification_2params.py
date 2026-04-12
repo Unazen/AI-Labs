@@ -89,7 +89,7 @@ print("\nConfusion matrix",cm )
 print("\nОтчет: ", report)
 print(score)
 
-#Визуализация ROC-кривой
+""" #Визуализация ROC-кривой
 plt.figure()
 plt.plot(fpr, tpr, color='darkorange', label=f'ROC curve (area = {roc_auc:.2f})')
 plt.plot([0, 1], [0, 1], color='navy', linestyle='--')
@@ -98,8 +98,7 @@ plt.ylabel('True Positive Rate')
 plt.title('ROC-кривая')
 plt.legend(loc="lower right")
 plt.savefig("classification_2params/ROC-curve.png")
-plt.show()
-
+plt.show() """
 
 # Список конфигураций для сравнения
 configs = [
@@ -108,7 +107,19 @@ configs = [
     {"name": "Глубина 6 (Pre-pruning)", "params": {"max_depth": 6}},
     {"name": "Глубина 6 (Pre-pruning)+Мин. объектов в листе 2", "params": {"max_depth": 6,"min_samples_leaf": 2,"class_weight":'balanced'}},
     {"name": "Мин. объектов в листе 10", "params": {"min_samples_leaf": 10}},
-    {"name": "Обрезка (Post-pruning)", "params": {"ccp_alpha": 0.02}}
+    {
+        "name": "Сбалансированное дерево", 
+        "params": {"max_depth": 5, "min_samples_split": 50, "min_samples_leaf": 25}
+    },
+    {
+        "name": "Дерево со случайными признаками", 
+        "params": {"max_depth": 6, "max_features": "sqrt", "min_samples_leaf": 15}
+    },
+    {
+        "name": "Энтропийное дерево", 
+        "params": {"criterion": "entropy", "max_depth": 5, "min_samples_leaf": 20}
+    },
+    {"name": "Лучшие параметры", "params": {"max_depth": 5, "min_samples_split":100,"min_samples_leaf":40}},
 ]
 
 results = []
