@@ -52,6 +52,7 @@ y_test_binary = (y_test == class_name).astype(int)
 fpr, tpr, _ = roc_curve(y_test_binary, y_proba[:, class_index])
 roc_auc = auc(fpr, tpr)
 score = roc_auc_score(y_test, y_proba, multi_class='ovr')
+print("Roc auc score", score)
 
 #Визуализация ROC-кривой
 plt.figure()
