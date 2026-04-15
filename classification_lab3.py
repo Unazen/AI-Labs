@@ -3,7 +3,6 @@ from sklearn.metrics import roc_curve
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report, auc, roc_curve, roc_auc_score
 from sklearn.tree import DecisionTreeClassifier
-# import numpy as np
 import matplotlib.pyplot as plt
 
 #загрузка датасета
@@ -68,10 +67,6 @@ plt.legend(loc="lower right")
 plt.savefig("ROC-curve.png")
 plt.show() """
 
-import pandas as pd
-from sklearn.tree import DecisionTreeClassifier, plot_tree
-import matplotlib.pyplot as plt
-
 # Список конфигураций для сравнения
 configs = [
     {"name": "Без ограничений", "params": {}},
@@ -80,24 +75,9 @@ configs = [
     {"name": "Мин. объектов в листе 10", "params": {"min_samples_leaf": 10}},
     {"name": "Обрезка (Post-pruning)", "params": {"ccp_alpha": 0.02}}
 ]
-
-results = []
-
 for config in configs:
-    # Создаем и обучаем модель
-    model = DecisionTreeClassifier(**config["params"], random_state=42)
-    model.fit(X_train, y_train)
-    
-    # Считаем точность
-    train_acc = model.score(X_train, y_train)
-    test_acc = model.score(X_test, y_test)
-    
-    results.append({
-        "Вариант": config["name"],
-        "Train Accuracy": train_acc,
-        "Test Accuracy": test_acc
-    })
-
-# Выводим красивую таблицу
-results_df = pd.DataFrame(results)
-print(results_df)
+    dt_classifier_model = DecisionTreeClassifier(**config["params"], random_state=42)
+    dt_classifier_model.fit(X_train, y_train)
+    y_pred_test=dt_classifier_model.predict(X_test)
+    accuracy = accuracy_score(y_test, y_pred_test)
+    print (accuracy)
