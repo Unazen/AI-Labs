@@ -4,6 +4,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report, auc, roc_curve, roc_auc_score
 from sklearn.tree import DecisionTreeClassifier
 import matplotlib.pyplot as plt
+from sklearn import tree
 
 #загрузка датасета
 df=pd.read_csv("processed_classification.csv")
@@ -56,7 +57,7 @@ print("\nConfusion matrix",cm )
 print("\nОтчет: ", report)
 print("\n Roc Auc Score",score)
 
-""" #Визуализация ROC-кривой
+#Визуализация ROC-кривой
 plt.figure()
 plt.plot(fpr, tpr, color='darkorange', label=f'ROC curve (area = {roc_auc:.2f})')
 plt.plot([0, 1], [0, 1], color='navy', linestyle='--')
@@ -65,7 +66,7 @@ plt.ylabel('True Positive Rate')
 plt.title('ROC-кривая')
 plt.legend(loc="lower right")
 plt.savefig("ROC-curve.png")
-plt.show() """
+plt.show()
 
 # Список конфигураций для сравнения
 configs = [
@@ -81,3 +82,15 @@ for config in configs:
     y_pred_test=dt_classifier_model.predict(X_test)
     accuracy = accuracy_score(y_test, y_pred_test)
     print (accuracy)
+
+
+    # Визуализация дерева
+plt.figure(figsize=(20, 10))
+tree.plot_tree(dt_classifier_model, 
+               feature_names=X.columns.tolist(), 
+               filled=True, 
+               fontsize=10,
+               max_depth=4) # Ограничиваем отрисовку для красоты, даже если дерево глубже
+plt.title("Структура дерева решений")
+plt.savefig("regr_tree2.png")
+plt.show()

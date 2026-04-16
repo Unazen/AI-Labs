@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, root_mean_squared_error, mean_absolute_error,r2_score 
 from sklearn.tree import DecisionTreeRegressor
+from sklearn import tree
+
 
 #загрузка датасета
 df = pd.read_csv("processed_regression.csv")
@@ -31,3 +33,19 @@ print("Mean Square Error, среднеквадратичная ошибка",MSE
 print("Root MSE, корень среднеквадратичной ошибки",RMSE)
 print("Mean Absolute Error, средняя абсолютная ошибка",MAE)
 print("r^2",r2)
+
+# Визуализация дерева
+plt.figure(figsize=(20, 10))
+tree.plot_tree(dt_regressor_model, 
+               feature_names=X.columns.tolist(), 
+               filled=True, 
+               fontsize=10,
+               max_depth=4) # Ограничиваем отрисовку для красоты, даже если дерево глубже
+plt.title("Структура дерева решений")
+plt.savefig("regr_tree2.png")
+plt.show()
+
+""" 
+y_pred_test.plot_tree(dt_regressor_model)
+plt.savefig("regr_tree.png")
+plt.show() """
