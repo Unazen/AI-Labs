@@ -18,9 +18,13 @@ y=df["Personality"]
 X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.4,random_state=42)
 
 #модель AB
-AB = AdaBoostClassifier(learning_rate=1,n_estimators=500)
-""" AB = AdaBoostClassifier(learning_rate=0.5,n_estimators=1000)
+# AB = AdaBoostClassifier(learning_rate=1,n_estimators=600)
+# AB = AdaBoostClassifier(learning_rate=0.8,n_estimators=750)
+AB = AdaBoostClassifier(learning_rate=0.6,n_estimators=1000)
+# AB = AdaBoostClassifier(learning_rate=1,n_estimators=500)
+""" AB = AdaBoostClassifier(learning_rate=0.5,n_estimators=1200)
 AB = AdaBoostClassifier(learning_rate=0.1,n_estimators=5000) """
+# 1-600
 AB.fit(X_train, y_train)
 y_pred_test_ab = AB.predict(X_test)
 
@@ -62,7 +66,7 @@ plt.title('ROC-кривая')
 plt.legend(loc="lower right")
 plt.savefig("ROC-curve-AB.png")
 plt.show()
-
+""" 
 #модель GBC
 
 GBC = GradientBoostingClassifier()
@@ -106,4 +110,4 @@ plt.ylabel('True Positive Rate')
 plt.title('ROC-кривая')
 plt.legend(loc="lower right")
 plt.savefig("ROC-curve-GBC.png")
-plt.show()
+plt.show() """
